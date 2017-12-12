@@ -1,5 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.io.PrintWriter" %>
+<jsp:useBean id="pointsBean" class="points.Points" scope="session"/>
 <html>
 
 <head>
@@ -30,12 +31,15 @@
       width: 100%;
       border: 1px solid black;
       border-collapse: collapse;
+      table-layout:fixed;
     }
     table.calculation td, table.calculation th
     {
       text-align:center;
+      vertical-align: middle;
       padding: 1%;
       border: 1px solid black;
+      overflow: auto;
     }
     tr#header
     {
@@ -50,6 +54,7 @@
       padding: 0;
       vertical-align: top;
     }
+
     td.navigationpanel
     {
       height: 10%;
@@ -75,16 +80,23 @@
     }
     p.caption
     {
-      padding-top: 2%;
-      padding-bottom: 2%;
-      font-size: 150%;
+      text-align: center;
+      font-size: x-large;
+      font-weight: 600;
+    }
+    #caption{
+      text-align: center;
+      font-size: x-large;
+      font-weight: 600;
     }
     a
     {
       color: inherit;
       text-decoration: none;
     }
-
+    #canvasblock{
+      text-align: center;
+    }
   </style>
   <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
   <script type="text/javascript">
@@ -138,7 +150,7 @@
           <td class="sidespacer" />
           <td id="body">
             <table id="bodylayout" cellpadding="0" cellspacing="0">
-                <td>
+                <td id="canvasblock">
                   <canvas onclick="makeForm();" onmousemove="mouseCoords(event)" id="canvas" style="border:1px solid black;" height="500" width="500">
                     <p>Ваш браузер не поддерживает рисование.</p>
                   </canvas>
@@ -175,7 +187,7 @@
                           redrawPoints();
                       }
                       function redrawPoints() {
-                          context.fillStyle = "rgb(0, 255, 0)";
+                          context.fillStyle = "rgb(255, 0, 0)";
                           for(i=0;i<points.length;i++){
                               context.beginPath();
                               context.arc(points[i].X,points[i].Y,2,0,2*Math.PI,false);
@@ -185,7 +197,7 @@
                       }
                       function drawPoint(x,y){
                           points.push(new Point(x,y));
-                          context.fillStyle = "rgb(0, 255, 0)";
+                          context.fillStyle = "rgb(255, 0, 0)";
                           context.beginPath();
                           context.arc(x,y,2,0,2*Math.PI,false);
                           context.fill();
@@ -212,9 +224,6 @@
                           window.yCoord = -(window.yCoord-250)/50;
                           document.getElementById('coords').innerHTML = "X:"+window.xCoord+";Y:"+window.yCoord;
                       }
-                      function bean() {
-
-                      }
                   </script>
                 </td>
               </tr>
@@ -226,77 +235,77 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <table class="calculation">
-                    <form action="controller" method="GET" name="form" onsubmit="return checkInput();bean();">
+                  <table class="calculation" cols="3">
+                    <form action="controller" method="GET" name="form" onsubmit="return checkInput();">
                       <tr>
-                        <th colspan="9">
+                        <th colspan="9" width="50%">
                           <p>X:<p>
                         </th>
-                        <th colspan="1">
+                        <th colspan="1" width="25%">
                           <p>Y:<p>
                         </th>
-                        <th colspan="5">
+                        <th colspan="5" width="25%">
                           <p>R:<p>
                         </th>
                       </tr>
                       <tr>
-                        <td width="5%">
+                        <td class="x">
                           <input class="myCheckbox" type="checkbox" value="-2" name="x" id="ch1"/>
                           <p><label for="ch1">-2</label></p>
                         </td>
-                        <td width="5%">
+                        <td class="x">
                           <input class="myCheckbox" type="checkbox" value="-1.5" name="x" id="ch2"/>
                           <p><label for="ch2">-1.5</label></p>
                         </td>
-                        <td width="5%">
+                        <td class="x">
                           <input class="myCheckbox" type="checkbox" value="-1" name="x" id="ch3"/>
                           <p><label for="ch3">-1</label></p>
                         </td>
-                        <td width="5%">
+                        <td class="x">
                           <input class="myCheckbox" type="checkbox" value="-0.5" name="x" id="ch4"/>
                           <p><label for="ch4">-0.5</label></p>
                         </td>
-                        <td>
+                        <td class="x">
                           <input class="myCheckbox" type="checkbox" value="0" name="x" id="ch5"/>
                           <p><label for="ch5">0</label></p>
                         </td>
-                        <td>
+                        <td class="x">
                           <input class="myCheckbox" type="checkbox" value="0.5" name="x" id="ch6"/>
                           <p><label for="ch6">0.5</label></p>
                         </td>
-                        <td>
+                        <td class="x">
                           <input class="myCheckbox" type="checkbox" value="1" name="x" id="ch7" />
                           <p><label for="ch7">1</label></p>
                         </td>
-                        <td>
+                        <td class="x">
                           <input class="myCheckbox" type="checkbox" value="1.5" name="x" id="ch8"/>
                           <p><label for="ch8">1.5</label></p>
                         </td>
-                        <td>
+                        <td class="x">
                           <input class="myCheckbox" type="checkbox" value="2" name="x" id="ch9"/>
                           <p><label for="ch9">2</label></p>
                         </td>
 
-                        <td>
+                        <td class="y">
                           <input name="y" required type="text" />
                         </td>
-                        <td>
+                        <td class="r">
                           <input class="myRadio" onclick="draw();" type="radio" value="1" name="r" id="rd1"/>
                           <p><label for="rd1">1</label></p>
                         </td>
-                        <td>
+                        <td class="r">
                           <input class="myRadio" onclick="draw();" type="radio" value="2" name="r" id="rd2"/>
                           <p><label for="rd2">2</label></p>
                         </td>
-                        <td>
+                        <td class="r">
                           <input class="myRadio" onclick="draw();" type="radio" value="3" name="r" id="rd3"/>
                           <p><label for="rd3">3</label></p>
                         </td>
-                        <td>
+                        <td class="r">
                           <input class="myRadio" onclick="draw();" type="radio" value="4" name="r" id="rd4"/>
                           <p><label for="rd4">4</label></p>
                         </td>
-                        <td>
+                        <td class="r">
                           <input class="myRadio" onclick="draw();" type="radio" value="5" name="r" id="rd5"/>
                           <p><label for="rd5">5</label></p>
                         </td>
@@ -319,39 +328,65 @@
                 <td colspan="2">
                   <table class="calculation">
                     <tr>
-                      <th>
+                      <th width="15%">
                         <p>number</p>
                       </th>
-                      <th>
+                      <th width="15%">
                         <p>X</p>
                       </th>
-                      <th>
+                      <th width="15%">
                         <p>Y</p>
                       </th>
-                      <th>
+                      <th width="15%">
                         <p>R</p>
                       </th>
                       <th>
                         <p>Result</p>
                       </th>
                     </tr>
-                    <tr>
-                      <td>
-                        <p>1</p>
-                      </td>
-                      <td>
-                        <p></p>
-                      </td>
-                      <td>
-                        <p></p>
-                      </td>
-                      <td>
-                        <p></p>
-                      </td>
-                      <td>
-                        <p>$result</p>
-                      </td>
-                    </tr>
+                    <%ArrayList<Double> x;
+                      ArrayList<Double> y;
+                      ArrayList<Integer> r;
+                      ArrayList<String> res;
+                      if(request.getSession().getAttribute("result")!=null) {
+                        pointsBean.setX((Double) request.getSession().getAttribute("x"));
+                        pointsBean.setY((Double) request.getSession().getAttribute("y"));
+                        pointsBean.setR((Integer) request.getSession().getAttribute("r"));
+                        pointsBean.setResult((String) request.getSession().getAttribute("result"));
+                        x = pointsBean.getX();
+                        y = pointsBean.getY();
+                        r = pointsBean.getR();
+                        res = pointsBean.getRes();
+                    }
+                    else{
+                        x = pointsBean.getX();
+                        y = pointsBean.getY();
+                        r = pointsBean.getR();
+                        res = pointsBean.getRes();
+                      }
+                      for (int i = 0; i < res.size(); i++) {
+                        out.println("<tr>" +
+                                "<td>" +
+                                "<p>" + (i+1) + "</p>" +
+                                "</td>" +
+                                "<td>" +
+                                "<p>" + x.get(i) + "</p>" +
+                                "</td>" +
+                                "<td>" +
+                                "<p>" + y.get(i) + "</p>" +
+                                "</td>" +
+                                "<td>" +
+                                "<p>" + r.get(i) + "</p>" +
+                                "</td>" +
+                                "<td>" +
+                                "<p>" + res.get(i) + "</p>" +
+                                "</td>" +
+                                "</tr>" +
+                                "<script>drawPoint("+(x.get(i)*50+250)+","+(-y.get(i)*50+250)+");</script>");
+                      }
+                      ;
+                      request.getSession().setAttribute("result",null);
+                    %>
                   </table>
                 </td>
               </tr>
@@ -374,7 +409,6 @@
     $unique.click(function() {
         $unique.filter(':checked').not(this).removeAttr('checked');
     });
-    //draw();
 </script>
 </body>
 </html>

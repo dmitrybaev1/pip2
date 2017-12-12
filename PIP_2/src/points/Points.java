@@ -1,32 +1,37 @@
 package points;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Points {
-    private double listX=0;
-    private double listY=0;
-    private int listR=0;
-    private double listRes=0;
+    private ArrayList<Double> listX=new ArrayList<Double>();
+    private ArrayList<Double> listY=new ArrayList<Double>();
+    private ArrayList<Integer> listR=new ArrayList<Integer>();
+    private ArrayList<String> listRes=new ArrayList<String>();
     public Points(){
 
     }
     public void setX(double x){
-        this.listX=x;
+        this.listX.add(x);
     }
     public void setY(double y){
-        this.listX=y;
+        this.listY.add(y);
     }
-    public double getX(){
+    public ArrayList<Double> getX(){
         return listX;
     }
-    public double getY(){
+    public ArrayList<Double> getY(){
         return listY;
     }
     public void setR(int r){
-        this.listR=r;
+        this.listR.add(r);
     }
-    public int getR(){
+    public ArrayList<Integer> getR(){
         return listR;
     }
-    public double getRes(){
+    public ArrayList<String> getRes(){
         return listRes;
+    }
+    public void setResult(String result){
+        this.listRes.add(result);
     }
 }
