@@ -1,9 +1,11 @@
 import javax.servlet.http.*;
 import javax.servlet.*;
 import java.io.*;
-public class AreaCheckServlet extends HttpServlet {
+public class AreaCheckServlet extends HttpServlet
+{
     @Override
-    public void doGet(HttpServletRequest request,HttpServletResponse response) throws IOException, ServletException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+    {
         PrintWriter out = response.getWriter();
         response.setContentType("text/html;charset=UTF-8");
         String s_x = request.getParameter("x");
@@ -12,20 +14,27 @@ public class AreaCheckServlet extends HttpServlet {
         Double x = Double.parseDouble(s_x);
         Double y = Double.parseDouble(s_y);
         Integer r = Integer.parseInt(s_r);
-        String result = checkArea(x,y,r);
+        String result = checkArea(x, y, r);
         request.getSession().setAttribute("x",x);
         request.getSession().setAttribute("y",y);
         request.getSession().setAttribute("r",r);
         request.getSession().setAttribute("result",result);
-        form(out,x,y,r,result);
+        form(out, x, y, r, result);
 
     }
-    String checkArea(double x,double y,int r){
-        if((y<=0.5*x+((double)r/2)&&y>=0&&x<=0)||(y<=r&&x<=(double)r/2&&y>=0&&x>=0)||(Math.pow(x,2)+Math.pow(y,2)<=Math.pow((double)r/2,2)&&x>=0&&y<=0))
+
+    String checkArea(double x, double y, int r)
+    {
+        if ((y <= 0.5 * x + ((double)r/2) && y >=0 && x<=0) || (y <= r && x <= (double)r/2 && y >= 0 && x >= 0) ||
+            (Math.pow(x, 2) + Math.pow(y, 2) <= Math.pow((double)r/2, 2) && x >= 0 && y <= 0))
+        {
             return "Точка входит в область";
+        }
         return "Точка не входит в область";
     }
-    void form(PrintWriter out,double x,double y,int r,String result){
+
+    void form(PrintWriter out, double x, double y, int r, String result)
+    {
         out.println("<html><head><title>result</title><style>table\n" +
                 "        {\n" +
                 "            table-layout:fixed;\n" +
