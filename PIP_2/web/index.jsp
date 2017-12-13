@@ -186,23 +186,31 @@
                           context.closePath();
                           redrawPoints();
                       }
-                      function redrawPoints() {
-                          context.fillStyle = "rgb(255, 0, 0)";
-                          for(i=0;i<points.length;i++){
-                              context.beginPath();
-                              context.arc(points[i].X,points[i].Y,2,0,2*Math.PI,false);
-                              context.fill();
-                              context.closePath();
-                          }
-                      }
-                      function drawPoint(x,y){
-                          points.push(new Point(x,y));
-                          context.fillStyle = "rgb(255, 0, 0)";
-                          context.beginPath();
-                          context.arc(x,y,2,0,2*Math.PI,false);
-                          context.fill();
-                          context.closePath();
-                      }
+                    function redrawPoints() {
+                        var r = document.form.r.value;
+                        if (r == 1 || r == 2 || r == 3 || r == 4 || r == 5)
+                            for(i=0;i<points.length;i++){
+                                var x = (points[i].X-250)/50;
+                                var y = -(points[i].Y-250)/50;
+                                if((y<=0.5*x+(r/2)&&y>=0&&x<=0)||
+                                    (y<=r&&x<=r/2&&y>=0&&x>=0)||
+                                    (Math.pow(x,2)+Math.pow(y,2)<=Math.pow(r/2,2)&&x>=0&&y<=0)){
+                                    context.fillStyle = "rgb(0, 255, 0)";
+                                }
+                                else{
+                                    context.fillStyle = "rgb(255, 0, 0)";
+                                }
+                                context.beginPath();
+                                context.arc(points[i].X,points[i].Y,2,0,2*Math.PI,false);
+                                context.fill();
+                                context.closePath();
+                            }
+                    }
+
+                    function addPoint(x,y){
+                        p = new Point(x,y);
+                        points.push(p);
+                    }
                       var xCoord;
                       var yCoord;
                       function makeForm(){
@@ -382,7 +390,7 @@
                                 "<p>" + res.get(i) + "</p>" +
                                 "</td>" +
                                 "</tr>" +
-                                "<script>drawPoint("+(x.get(i)*50+250)+","+(-y.get(i)*50+250)+");</script>");
+                                "<script>addPoint("+(x.get(i)*50+250)+","+(-y.get(i)*50+250)+");</script>");
                       }
                       ;
                       request.getSession().setAttribute("result",null);
