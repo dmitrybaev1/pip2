@@ -222,7 +222,8 @@
                               document.getElementsByName("x")[0].checked = true;
                               document.getElementsByName("x")[0].value = window.xCoord;
                               document.form.action = "controller";
-                              document.form.submit();
+                              if(checkInput())
+                                document.form.submit();
                           }
                       }
                       function mouseCoords(e) {
@@ -356,11 +357,11 @@
                       ArrayList<Double> y;
                       ArrayList<Integer> r;
                       ArrayList<String> res;
-                      if(request.getSession().getAttribute("result")!=null) {
-                        pointsBean.setX((Double) request.getSession().getAttribute("x"));
-                        pointsBean.setY((Double) request.getSession().getAttribute("y"));
-                        pointsBean.setR((Integer) request.getSession().getAttribute("r"));
-                        pointsBean.setResult((String) request.getSession().getAttribute("result"));
+                      if(request.getAttribute("result")!=null) {
+                        pointsBean.setX(Double.parseDouble(request.getParameter("x")));
+                        pointsBean.setY(Double.parseDouble(request.getParameter("y")));
+                        pointsBean.setR(Integer.parseInt(request.getParameter("r")));
+                        pointsBean.setResult((String)request.getAttribute("result"));
                         x = pointsBean.getX();
                         y = pointsBean.getY();
                         r = pointsBean.getR();
@@ -393,7 +394,7 @@
                                 "<script>addPoint("+(x.get(i)*50+250)+","+(-y.get(i)*50+250)+");</script>");
                       }
                       ;
-                      request.getSession().setAttribute("result",null);
+                      request.setAttribute("result",null);
                     %>
                   </table>
                 </td>
