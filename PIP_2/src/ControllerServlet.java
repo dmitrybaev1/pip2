@@ -11,27 +11,41 @@ public class ControllerServlet extends HttpServlet
         int r=0;
         if(request.getMethod()=="GET")
         {
-            if(request.getParameter("x") != null & request.getParameter("y") != null & request.getParameter("r") != null) {
-                try {
+            if(request.getParameter("x") != null & request.getParameter("y") != null & request.getParameter("r") != null)
+            {
+                try
+                {
                     x = Double.parseDouble(request.getParameter("x"));
-                } catch (NumberFormatException e) {
+                }
+                catch (NumberFormatException e)
+                {
                     out.println("Error");
                 }
-                try {
+                try
+                {
                     y = Double.parseDouble(request.getParameter("y"));
-                } catch (NumberFormatException e) {
+                }
+                catch (NumberFormatException e)
+                {
                     out.println("Error");
                 }
-                try {
+                try
+                {
                     r = Integer.parseInt(request.getParameter("r"));
-                } catch (NumberFormatException e) {
+                }
+                catch (NumberFormatException e)
+                {
                     out.println("Error");
                 }
-                if (y >= -3 && y <= 5)
-                    if (r == 1 || r == 2 || r == 3 || r == 4 || r == 5) {
-                        RequestDispatcher dispatcher = request.getRequestDispatcher("/areacheck");
-                        dispatcher.forward(request, response);
-                    }
+                if (y >= -3 & y <= 5 & (r == 1 || r == 2 || r == 3 || r == 4 || r == 5))
+                {
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/areacheck");
+                    dispatcher.forward(request, response);
+                }
+                else
+                {
+                    out.println("Error");
+                }
             }
             else
             {
