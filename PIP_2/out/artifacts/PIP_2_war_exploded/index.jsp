@@ -99,30 +99,6 @@
     }
   </style>
   <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
-  <script type="text/javascript">
-      function checkInput()
-      {
-          var y = document.form.y.value;
-          if (!isFinite(y) || y >= 5 || y <= -3)
-          {
-              alert("'y' must be from -3 to 5!");
-              document.form.y.focus();
-              return false;
-          }
-          if(!($('.myCheckbox').is(':checked')))
-          {
-              alert('Input x!');
-              return false;
-          }
-          if(!($('.myRadio').is(':checked'))){
-              alert('Input the radius!');
-              return false;
-          }
-          else{
-              return true;
-          }
-      }
-  </script>
   <meta charset="utf-8">
   <meta name="keywords" content="IFMO, Rafikov, Baev, Internet-application programming">
   <meta name="author" content="Rafikov, Baev">
@@ -160,7 +136,12 @@
                         this.X = x;
                         this.Y = y;
                     }
+                    function PointRes(x,y){
+                        this.X = x;
+                        this.Y = y;
+                    }
                       var points=[];
+                      var pointsres=[];
                       var canvas = document.getElementById("canvas");
                       context = canvas.getContext("2d");
                       var img = new Image();
@@ -211,6 +192,10 @@
                         p = new Point(x,y);
                         points.push(p);
                     }
+                    function addPointResult(x,y){
+                        po = new PointRes(x,y);
+                        pointsres.push(po);
+                    }
                       var xCoord;
                       var yCoord;
                       function makeForm(){
@@ -222,8 +207,52 @@
                               document.getElementsByName("x")[0].checked = true;
                               document.getElementsByName("x")[0].value = window.xCoord;
                               document.form.action = "controller";
-                              if(checkInput())
-                                document.form.submit();
+                              if(checkInput()) {
+                                  document.form.submit();
+                              }
+                          }
+                      }
+                      function changeTable(){
+                          document.getElementById("results").innerHTML="";
+                          $("#results").append("<tr>\n" +
+                              "                      <th width=\"15%\">\n" +
+                              "                        <p>number</p>\n" +
+                              "                      </th>\n" +
+                              "                      <th width=\"15%\">\n" +
+                              "                        <p>X</p>\n" +
+                              "                      </th>\n" +
+                              "                      <th width=\"15%\">\n" +
+                              "                        <p>Y</p>\n" +
+                              "                      </th>\n" +
+                              "                      <th width=\"15%\">\n" +
+                              "                        <p>R</p>\n" +
+                              "                      </th>\n" +
+                              "                      <th>\n" +
+                              "                        <p>Result</p>\n" +
+                              "                      </th>\n" +
+                              "                    </tr>");
+                          for(i=0;i<pointsres.length;i++) {
+                              $.ajax({
+                                  type:'get',
+                                  url: "ajaxservlet",
+                                  async: false,
+                                  data:{'x':pointsres[i].X,'y':pointsres[i].Y,'r':document.form.r.value},
+                                  success: function (html) {
+                                      $("#results").append("<tr><td width='15%'><p>"+(i+1)+"</p></td>"+html+"</tr>");
+                                  },
+                                  error: function (msg) {
+                                      alert(msg.responseText);
+                                  }
+                              });
+                              /*$.ajax({
+                                  url: 'ajaxservlet',
+                                  success: function(){
+                                      alert('Load was performed.');
+                                  },
+                                  error: function(){
+                                      alert('Load wasnt performed.');
+                                  }
+                              });*/
                           }
                       }
                       function mouseCoords(e) {
@@ -232,6 +261,30 @@
                           window.xCoord = (window.xCoord-250)/50;
                           window.yCoord = -(window.yCoord-250)/50;
                           document.getElementById('coords').innerHTML = "X:"+window.xCoord+";Y:"+window.yCoord;
+                      }
+                  </script>
+                  <script type="text/javascript">
+                      function checkInput()
+                      {
+                          var y = document.form.y.value;
+                          if (!isFinite(y) || y >= 5 || y <= -3)
+                          {
+                              alert("'y' must be from -3 to 5!");
+                              document.form.y.focus();
+                              return false;
+                          }
+                          if(!($('.myCheckbox').is(':checked')))
+                          {
+                              alert('Input x!');
+                              return false;
+                          }
+                          if(!($('.myRadio').is(':checked'))){
+                              alert('Input the radius!');
+                              return false;
+                          }
+                          else{
+                              return true;
+                          }
                       }
                   </script>
                 </td>
@@ -299,23 +352,23 @@
                           <input name="y" required type="text" />
                         </td>
                         <td class="r">
-                          <input class="myRadio" onclick="draw();" type="radio" value="1" name="r" id="rd1"/>
+                          <input class="myRadio" onclick="draw();changeTable();" type="radio" value="1" name="r" id="rd1"/>
                           <p><label for="rd1">1</label></p>
                         </td>
                         <td class="r">
-                          <input class="myRadio" onclick="draw();" type="radio" value="2" name="r" id="rd2"/>
+                          <input class="myRadio" onclick="draw();changeTable();" type="radio" value="2" name="r" id="rd2"/>
                           <p><label for="rd2">2</label></p>
                         </td>
                         <td class="r">
-                          <input class="myRadio" onclick="draw();" type="radio" value="3" name="r" id="rd3"/>
+                          <input class="myRadio" onclick="draw();changeTable();" type="radio" value="3" name="r" id="rd3"/>
                           <p><label for="rd3">3</label></p>
                         </td>
                         <td class="r">
-                          <input class="myRadio" onclick="draw();" type="radio" value="4" name="r" id="rd4"/>
+                          <input class="myRadio" onclick="draw();changeTable();" type="radio" value="4" name="r" id="rd4"/>
                           <p><label for="rd4">4</label></p>
                         </td>
                         <td class="r">
-                          <input class="myRadio" onclick="draw();" type="radio" value="5" name="r" id="rd5"/>
+                          <input class="myRadio" onclick="draw();changeTable();" type="radio" value="5" name="r" id="rd5"/>
                           <p><label for="rd5">5</label></p>
                         </td>
                       </tr>
@@ -335,7 +388,7 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <table class="calculation">
+                  <table class="calculation" id="results">
                     <tr>
                       <th width="15%">
                         <p>number</p>
@@ -357,6 +410,9 @@
                       ArrayList<Double> y;
                       ArrayList<Integer> r;
                       ArrayList<String> res;
+                      Integer rad=1;
+                      Double y_v=0d;
+                      Double x_v=0d;
                       if(request.getAttribute("result")!=null) {
                         pointsBean.setX(Double.parseDouble(request.getParameter("x")));
                         pointsBean.setY(Double.parseDouble(request.getParameter("y")));
@@ -366,6 +422,9 @@
                         y = pointsBean.getY();
                         r = pointsBean.getR();
                         res = pointsBean.getRes();
+                        rad = Integer.parseInt(request.getParameter("r"));
+                        y_v = Double.parseDouble(request.getParameter("y"));
+                        x_v = Double.parseDouble(request.getParameter("x"));
                     }
                     else{
                         x = pointsBean.getX();
@@ -391,12 +450,96 @@
                                 "<p>" + res.get(i) + "</p>" +
                                 "</td>" +
                                 "</tr>" +
-                                "<script>addPoint("+(x.get(i)*50+250)+","+(-y.get(i)*50+250)+");</script>");
+                                "<script>addPoint("+(x.get(i)*50+250)+","+(-y.get(i)*50+250)+");" +
+                                "addPointResult("+x.get(i)+","+y.get(i)+");</script>");
                       }
                       ;
+                      out.println("<script>" +
+                              "if("+rad+"==1)\n" +
+                                      " {\n" +
+                                      " document.getElementsByName('r')[0].checked = true;\n" +
+                                      " document.form.r.value=1;\n" +
+                                      " }\n" +
+                                      " if("+rad+"==2)\n" +
+                                      " {\n" +
+                                      " document.getElementsByName('r')[1].checked = true;\n" +
+                                      " document.form.r.value=2;\n" +
+                                      " }\n" +
+                                      " if("+rad+"==3)\n" +
+                                      " {\n" +
+                                      " document.getElementsByName('r')[2].checked = true;\n" +
+                                      " document.form.r.value=3;\n" +
+                                      " }\n" +
+                                      " if("+rad+"==4)\n" +
+                                      " {\n" +
+                                      " document.getElementsByName('r')[3].checked = true;\n" +
+                                      " document.form.r.value=4;\n" +
+                                      " }\n" +
+                                      " if("+rad+"==5)\n" +
+                                      " {\n" +
+                                      " document.getElementsByName('r')[4].checked = true;\n" +
+                                      " document.form.r.value=5;" +
+                              "}" +
+                              " document.getElementsByName('x')[0].checked = false;\n" +
+                              " document.getElementsByName('x')[1].checked = false;\n" +
+                              " document.getElementsByName('x')[2].checked = false;\n" +
+                              " document.getElementsByName('x')[3].checked = false;\n" +
+                              " document.getElementsByName('x')[4].checked = false;\n" +
+                              " document.getElementsByName('x')[5].checked = false;\n" +
+                              " document.getElementsByName('x')[6].checked = false;\n" +
+                              " document.getElementsByName('x')[7].checked = false;\n" +
+                              " document.getElementsByName('x')[8].checked = false;\n" +
+                              "if("+x_v+"==-2)\n" +
+                              " {\n" +
+                              " document.getElementsByName('x')[0].checked = true;\n" +
+                              " document.form.r.value=-2;\n" +
+                              " }\n" +
+                              " if("+x_v+"==-1.5)\n" +
+                              " {\n" +
+                              " document.getElementsByName('x')[1].checked = true;\n" +
+                              " document.form.r.value=-1.5;\n" +
+                              " }\n" +
+                              " if("+x_v+"==-1)\n" +
+                              " {\n" +
+                              " document.getElementsByName('x')[2].checked = true;\n" +
+                              " document.form.r.value=-1;\n" +
+                              " }\n" +
+                              " if("+x_v+"==-0.5)\n" +
+                              " {\n" +
+                              " document.getElementsByName('x')[3].checked = true;\n" +
+                              " document.form.r.value=-0.5;\n" +
+                              " }\n" +
+                              " if("+x_v+"==0)\n" +
+                              " {\n" +
+                              " document.getElementsByName('x')[4].checked = true;\n" +
+                              " document.form.r.value=0;" +
+                              "}" +
+                              " if("+x_v+"==0.5)\n" +
+                              " {\n" +
+                              " document.getElementsByName('x')[5].checked = true;\n" +
+                              " document.form.r.value=0.5;" +
+                              "}" +
+                              " if("+x_v+"==1)\n" +
+                              " {\n" +
+                              " document.getElementsByName('x')[6].checked = true;\n" +
+                              " document.form.r.value=1;" +
+                              "}" +
+                              " if("+x_v+"==1.5)\n" +
+                              " {\n" +
+                              " document.getElementsByName('x')[7].checked = true;\n" +
+                              " document.form.r.value=1.5;" +
+                              "}" +
+                              " if("+x_v+"==2)\n" +
+                              " {\n" +
+                              " document.getElementsByName('x')[8].checked = true;\n" +
+                              " document.form.r.value=2;" +
+                              "}" +
+                              "document.form.y.value="+y_v+";"+
+                              "draw();" +
+                              "</script>");
                       request.setAttribute("result",null);
                     %>
-                  </table>
+                </table>
                 </td>
               </tr>
               <tr>

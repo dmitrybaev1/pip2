@@ -19,4 +19,12 @@
         <servlet-name>areacheck</servlet-name>
         <url-pattern>/areacheck</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ajaxservlet</servlet-name>
+        <servlet-class>AjaxServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ajaxservlet</servlet-name>
+        <url-pattern>/ajaxservlet</url-pattern>
+    </servlet-mapping>
 </web-app>
