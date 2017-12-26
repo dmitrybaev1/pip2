@@ -383,7 +383,7 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <p id="caption">History</p>
+                  <p id="caption">Facts</p>
                 </td>
               </tr>
               <tr>
