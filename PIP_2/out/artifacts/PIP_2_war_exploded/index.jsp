@@ -433,24 +433,7 @@
                         res = pointsBean.getRes();
                       }
                       for (int i = 0; i < res.size(); i++) {
-                        out.println("<tr>" +
-                                "<td>" +
-                                "<p>" + (i+1) + "</p>" +
-                                "</td>" +
-                                "<td>" +
-                                "<p>" + x.get(i) + "</p>" +
-                                "</td>" +
-                                "<td>" +
-                                "<p>" + y.get(i) + "</p>" +
-                                "</td>" +
-                                "<td>" +
-                                "<p>" + r.get(i) + "</p>" +
-                                "</td>" +
-                                "<td>" +
-                                "<p>" + res.get(i) + "</p>" +
-                                "</td>" +
-                                "</tr>" +
-                                "<script>addPoint("+(x.get(i)*50+250)+","+(-y.get(i)*50+250)+");" +
+                        out.println("<script>addPoint("+(x.get(i)*50+250)+","+(-y.get(i)*50+250)+");" +
                                 "addPointResult("+x.get(i)+","+y.get(i)+");</script>");
                       }
                       ;
@@ -536,7 +519,7 @@
                               "}" +
                               "document.form.y.value="+y_v+";"+
                               "draw();" +
-                              "</script>");
+                              "changeTable();</script>");
                       request.setAttribute("result",null);
                     %>
                 </table>
